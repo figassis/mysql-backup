@@ -68,8 +68,10 @@ func main() {
 	instance := app.NewApp(cfg)
 
 	if cfg.Schedule == "" {
+		logrus.Print("Starting one off backup")
 		instance.Run()
 	} else {
+		logrus.Printf("Starting scheduled backups: %s", cfg.Schedule)
 		var wg sync.WaitGroup
 		wg.Add(1)
 		c := cron.New()

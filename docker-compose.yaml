@@ -1,0 +1,16 @@
+version: "3"
+volumes:
+  data:
+services:
+  app:
+    image: figassis/mysql-backup:0.0.2
+    restart: always
+    container_name: backup
+    volumes:
+      - data:/tmp/data
+      - ./config.yaml:/etc/mysql-backup/config.yaml
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "3"
