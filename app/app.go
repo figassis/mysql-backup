@@ -2,10 +2,11 @@ package app
 
 import (
 	"database/sql"
-	"github.com/davidhiendl/mysql-backup-to-restic/app/config"
-	"github.com/davidhiendl/mysql-backup-to-restic/app/restic"
 	"os"
 	"path/filepath"
+
+	"github.com/figassis/mysql-backup/app/config"
+	"github.com/figassis/mysql-backup/app/restic"
 )
 
 type App struct {
@@ -16,7 +17,7 @@ type App struct {
 }
 
 // Create new config and populate it from environment
-func NewApp(config *config.Config) (*App) {
+func NewApp(config *config.Config) *App {
 	app := App{
 		config:  config,
 		dumpDir: filepath.Join(config.Common.ScratchDir, "sqldumps"),
@@ -47,11 +48,11 @@ func (app *App) Run() {
 
 	// run restic
 	app.restic.InitRepositoryIfAbsent()
-	app.restic.Backup(app.dumpDir, nil);
-	if (app.config.RetentionPolicy.HasKeepDirective()) {
+	app.restic.Backup(app.dumpDir, nil)
+	if app.config.RetentionPolicy.HasKeepDirective() {
 		app.restic.Forget(&app.config.RetentionPolicy)
 
-		if (app.config.RetentionPolicy.Check) {
+		if app.config.RetentionPolicy.Check {
 			app.restic.Check()
 		}
 	}
@@ -65,7 +66,7 @@ func (app *App) Run() {
 func (app *App) ShouldIncludeDatabase(name string) (bool, string) {
 	// exclude system
 	if app.config.Databases.ExcludeSystem {
-		if name == "performance_schema" || name == "information_schema" || name == "mysql" {
+		if name == "performance_schema" || name == "information_schema" || name == "mysql" || name == "mysql_innodb_cluster_metadata" || name == "sys" {
 			return false, "system database excluded"
 		}
 	}

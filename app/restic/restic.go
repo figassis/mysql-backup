@@ -1,15 +1,16 @@
 package restic
 
 import (
-	"strconv"
-	shell "github.com/codeskyblue/go-sh"
-	"github.com/davidhiendl/mysql-backup-to-restic/app/config"
+	"errors"
+	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
-	"errors"
+
+	shell "github.com/codeskyblue/go-sh"
+	"github.com/figassis/mysql-backup/app/config"
 	"github.com/sirupsen/logrus"
-	"os/exec"
 )
 
 const (
@@ -30,7 +31,7 @@ type Restic struct {
 	exe      string
 }
 
-func New(cfg *config.Config) (*Restic) {
+func New(cfg *config.Config) *Restic {
 	w := Restic{
 		sh:  shell.NewSession(),
 		cfg: cfg,

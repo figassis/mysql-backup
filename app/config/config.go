@@ -7,6 +7,7 @@ type Config struct {
 	Databases       Databases       `yaml:"databases"`
 	Restic          Restic          `yaml:"restic"`
 	RetentionPolicy RetentionPolicy `yaml:"retentionPolicy"`
+	Schedule        string          `yaml:"schedule"`
 }
 
 type Common struct {

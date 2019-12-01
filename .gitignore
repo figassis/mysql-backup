@@ -6,3 +6,6 @@
 secrets.env
 /vendor
 .test-env*
+config.yaml
+.vscode
+mysql-backup

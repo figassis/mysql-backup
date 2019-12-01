@@ -1,8 +1,10 @@
 package config
 
+const backupDir = "/tmp/data"
+
 var Defaults = Config{
 	Common{
-		ScratchDir: "/tmp/mysqldump-to-restic",
+		ScratchDir: backupDir,
 	},
 	MySQL{
 		Port:     3306,
@@ -31,4 +33,5 @@ var Defaults = Config{
 		Check:  true,
 		DryRun: false,
 	},
+	"",
 }

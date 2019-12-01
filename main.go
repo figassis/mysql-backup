@@ -1,12 +1,15 @@
 package main
 
 import (
-	"github.com/sirupsen/logrus"
 	"os"
-	"strings"
-	"github.com/davidhiendl/mysql-backup-to-restic/app"
-	"github.com/davidhiendl/mysql-backup-to-restic/app/config"
 	"path/filepath"
+	"strings"
+	"sync"
+
+	"github.com/figassis/mysql-backup/app"
+	"github.com/figassis/mysql-backup/app/config"
+	cron "github.com/robfig/cron/v3"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -63,5 +66,16 @@ func main() {
 	}
 
 	instance := app.NewApp(cfg)
-	instance.Run()
+
+	if cfg.Schedule == "" {
+		instance.Run()
+	} else {
+		var wg sync.WaitGroup
+		wg.Add(1)
+		c := cron.New()
+		c.AddFunc(cfg.Schedule, func() { instance.Run() })
+		c.Start()
+		wg.Wait()
+	}
+
 }
