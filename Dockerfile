@@ -1,5 +1,5 @@
 # build binary first
-FROM    figassis:ubuntu-golang
+FROM    figassis/ubuntu-golang
 LABEL   maintainer="Assis Ngolo <figassis@gmail.com>"
 
 ENV LOG_LEVEL=info
