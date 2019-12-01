@@ -45,7 +45,7 @@ func (app *App) dumpDatabaseMysqldump(dbName string) string {
 	defer outFile.Close()
 
 	// create command
-	cmd := exec.Command(binary, "--column-statistics=0", "-P"+strconv.Itoa(app.config.MySQL.Port), "-h"+app.config.MySQL.Host, "-u"+app.config.MySQL.Username, "-p"+app.config.MySQL.Password, dbName)
+	cmd := exec.Command(binary, "-P"+strconv.Itoa(app.config.MySQL.Port), "-h"+app.config.MySQL.Host, "-u"+app.config.MySQL.Username, "-p"+app.config.MySQL.Password, dbName)
 
 	// use gz compression if configured
 	if app.config.Dump.CompressWithGz {
