@@ -10,7 +10,7 @@ WORKDIR /go/src/github.com/figassis/mysql-backup
 
 # add source and build package
 ADD . /go/src/github.com/figassis/mysql-backup/
-RUN apt-get update && apt-get -y install mysql-client bzip2 curl \
+RUN apt-get update && apt-get -y install mysql-client bzip2 curl upx \
     && wget https://github.com/restic/restic/releases/download/v0.9.6/restic_0.9.6_linux_amd64.bz2 \
     && bzip2 -d restic_0.9.6_linux_amd64.bz2 && mv restic_0.9.6_linux_amd64 /usr/local/bin/restic \
     && chmod +x /usr/local/bin/restic && restic self-update \
