@@ -10,7 +10,7 @@ WORKDIR /go/src/github.com/figassis/mysql-backup
 
 # add source and build package
 ADD . /go/src/github.com/figassis/mysql-backup/
-RUN apt-get update && apt-get -y install restic mysqldump bzip2 curl \
+RUN apt-get update && apt-get -y install restic mysql-client bzip2 curl \
     && mkdir -p /etc/mysql-backup
 
 RUN go mod tidy \
