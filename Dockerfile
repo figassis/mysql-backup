@@ -14,7 +14,6 @@ RUN apt-get update && apt-get -y install restic mysqldump bzip2 curl \
     && mkdir -p /etc/mysql-backup
 
 RUN go mod tidy \
-
     # https://blog.filippo.io/shrink-your-go-binaries-with-this-one-weird-trick/
     && go build -i -o /mysql-backup -ldflags="-s -w" \
     # compress binary
