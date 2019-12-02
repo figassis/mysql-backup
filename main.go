@@ -53,7 +53,7 @@ func main() {
 	cfg.LoadYaml(configFileAbs)
 
 	// print cfg
-	logrus.Infof("configuration: \n%v", cfg.ToString())
+	//logrus.Infof("configuration: \n%v", cfg.ToString())
 
 	// validate cfg
 	validationErrors := cfg.Validate()
@@ -66,6 +66,7 @@ func main() {
 	}
 
 	instance := app.NewApp(cfg)
+	signals := make(chan bool, 1)
 
 	if cfg.Schedule == "" {
 		logrus.Print("Starting one off backup")
@@ -75,9 +76,27 @@ func main() {
 		var wg sync.WaitGroup
 		wg.Add(1)
 		c := cron.New()
-		c.AddFunc(cfg.Schedule, func() { instance.Run() })
+
+		//This is important to avoid locks by different PIDs
+		go runSchedule(&wg, signals, instance)
+
+		c.AddFunc(cfg.Schedule, func() { signals <- true })
 		c.Start()
 		wg.Wait()
 	}
 
+}
+
+func runSchedule(Wg *sync.WaitGroup, signals <-chan bool, instance *app.App) {
+	defer Wg.Done()
+
+	for {
+		select {
+		case signal := <-signals:
+			switch signal {
+			case true:
+				instance.Run()
+			}
+		}
+	}
 }

@@ -161,9 +161,9 @@ func (rt *Restic) Check() error {
 func (rt *Restic) appendCacheDirFlag(args []interface{}) []interface{} {
 	if rt.cfg.Restic.CacheEnable {
 		cacheDir := filepath.Join(rt.cfg.Common.ScratchDir, "restic-cache")
-		return append(args, "--cache-dir", cacheDir)
+		return append(args, "--cache-dir", cacheDir, "-vvvv")
 	}
-	return append(args, "--no-cache")
+	return append(args, "--no-cache", "-vvvv")
 }
 
 func (rt *Restic) run(args []interface{}) error {

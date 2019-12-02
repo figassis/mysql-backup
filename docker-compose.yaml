@@ -3,7 +3,8 @@ volumes:
   data:
 services:
   app:
-    image: figassis/mysql-backup:0.0.2
+    build: .
+    # image: figassis/mysql-backup:0.0.3
     restart: always
     container_name: backup
     volumes:
