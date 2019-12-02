@@ -90,6 +90,8 @@ func main() {
 func runSchedule(Wg *sync.WaitGroup, signals <-chan bool, instance *app.App) {
 	defer Wg.Done()
 
+	logrus.Printf("Running initial backup")
+	instance.Run()
 	for {
 		select {
 		case signal := <-signals:
